@@ -73,20 +73,23 @@ static void print_mem(struct task_struct *task)
 		 "\n%sMain Args:\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
 		 "\n%sEnviroment var:\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
                  "\n%sStack:\t\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
-		 "\n%sNumber of frames used = %lu "
-		 "\n%sTotal virtual memory used = %lu",
+		 "\n%sNumber of frames used = %lu %s"
+		 "\n%sTotal virtual memory used = %lu %s",
                  KBLU, KGRN, code_start,    KRED, code_end,    KYEL, codesize,
                  KBLU, KGRN, data_start,    KRED, data_end,    KYEL, datasize,
 		 KBLU, KGRN, heap_start,    KRED, heap_end,    KYEL, heapsize,
 		 KBLU, KGRN, mm->arg_start, KRED, mm->arg_end, KYEL, argusize,
 		 KBLU, KGRN, mm->env_start, KRED, mm->env_end, KYEL, envisize,
                  KBLU, KGRN, stack_start,   KRED, stack_end,   KYEL, stacksize,
-	 	 KBLU, rss,
-		 KBLU, mm->total_vm);
+	 	 KBLU, rss, KYEL,
+		 KBLU, mm->total_vm, KYEL);
+
+	printk("Mem printed.");
 }
 
 static void print_toptable(struct task_struct *task)
 {
+	printk("\n ---- Print top table ---- \n");
 	struct mm_struct *mm;
         struct vm_area_struct *vma;
         mm = task->mm;
@@ -100,7 +103,7 @@ static void print_toptable(struct task_struct *task)
 		addr = i * (1UL << 39);
 		pgd_ptr = pgd_offset(mm, addr);
 		unsigned long content = pgd_ptr->pgd;
-		printk("%sAddr: %lu -> %sContent: %lu", KYEL, addr, KGRN, content);
+		printk("%sAddr: %lu -> %sContent: %lu %s", KYEL, addr, KGRN, content, KYEL);
 	}
 }
 
@@ -113,8 +116,9 @@ static int mm_exp_load(void)
         for_each_process(task){
                 if ( task->pid == processid) {
                         printk("%s[pid:%d]\n", task->comm, task->pid);
-                        print_mem(task);
 			print_toptable(task);
+                        print_mem(task);
+			
                 }
         }
 
@@ -123,7 +127,7 @@ static int mm_exp_load(void)
 
 static void mm_exp_unload(void)
 {
-        printk("\nPrint segment information module exiting.\n");
+        //printk("\nPrint segment information module exiting.\n");
 }
 
 module_init(mm_exp_load);
