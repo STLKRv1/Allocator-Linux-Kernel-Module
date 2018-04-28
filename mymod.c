@@ -103,7 +103,8 @@ static void print_toptable(struct task_struct *task)
 		addr = i * (1UL << 39);
 		pgd_ptr = pgd_offset(mm, addr);
 		unsigned long content = pgd_ptr->pgd;
-		printk("%sAddr: %lu -> %sContent: %lu %s", KYEL, addr, KGRN, content, KYEL);
+		printk("___________________________");
+		printk("%sAddr: %lu  -  with entry number: %d \n%sPGD: %lu %s", KYEL, addr, i, KGRN, content, KYEL);
 	}
 }
 
