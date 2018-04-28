@@ -135,6 +135,5 @@ module_init(mm_exp_load);
 module_exit(mm_exp_unload);
 module_param(processid, int, 0);
 
-MODULE_AUTHOR ("Dank Memes, 420@lol.com");
 MODULE_DESCRIPTION ("Print segment information");
 MODULE_LICENSE("GPL");

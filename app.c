@@ -6,9 +6,9 @@
 
 #define REP_SIZE 10000
 
-int fibo(int x, char str[1024], int flag)
+int fibo(int x, char str[1024], int flag, int filler[])
 {
-	sleep(1);
+	sleep(0.5);
 
 	if (x == 0)
 	{
@@ -16,7 +16,7 @@ int fibo(int x, char str[1024], int flag)
 		{
 			system(str);
 			system("sudo rmmod mymod");
-			system("dmesg");
+			system("tail /var/log/syslog -n 8");
 	
 			flag = 1;
 		}
@@ -28,9 +28,8 @@ int fibo(int x, char str[1024], int flag)
 		return 1;
 
 	else{
-		char *ok = malloc(15);
-		fibo(x - 1, str, flag) + fibo(x - 2, str, flag);
-		free(ok);
+		int t[100];
+		t[7] = fibo(x - 1, str, flag, t) + fibo(x - 2, str, flag, NULL);
 	}
 }
 
@@ -49,11 +48,11 @@ int main()
 	// initial log
 	system(insmodstr);
 	system("sudo rmmod mymod");
-	//system("tail /var/log/syslog -n 8");
-	system("dmesg");
+	system("tail /var/log/syslog -n 8");
+	//system("dmesg");
 
 	// call to recursive function
-	fibo(10, insmodstr, 0);
+	fibo(1000, insmodstr, 0, NULL);
 	
 		
 	return 0;
