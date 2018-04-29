@@ -67,22 +67,22 @@ static void print_mem(struct task_struct *task)
 
 	// to be fixed and checked from proc/<pid>/status !
 	
-        printk("\n%sCode:\t\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
-               "\n%sData:\t\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
+        printk( "\n%sCode:\t\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
+                "\n%sData:\t\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
+		"\n%sMain Args:\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
+		"\n%sEnviroment var:\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
+		"\n%sNumber of frames used = %lu %s"
+		"\n%sTotal virtual memory used = %lu %s"
 		"\n%sHeap:\t\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
-		 "\n%sMain Args:\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
-		 "\n%sEnviroment var:\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
-                 "\n%sStack:\t\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes"
-		 "\n%sNumber of frames used = %lu %s"
-		 "\n%sTotal virtual memory used = %lu %s",
-                 KBLU, KGRN, code_start,    KRED, code_end,    KYEL, codesize,
-                 KBLU, KGRN, data_start,    KRED, data_end,    KYEL, datasize,
-		 KBLU, KGRN, heap_start,    KRED, heap_end,    KYEL, heapsize,
-		 KBLU, KGRN, mm->arg_start, KRED, mm->arg_end, KYEL, argusize,
-		 KBLU, KGRN, mm->env_start, KRED, mm->env_end, KYEL, envisize,
-                 KBLU, KGRN, stack_start,   KRED, stack_end,   KYEL, stacksize,
-	 	 KBLU, rss, KYEL,
-		 KBLU, mm->total_vm, KYEL);
+		"\n%sStack:\t\t%sstart = 0x%lx, %send = 0x%lx, %ssize = %lu bytes",
+                KBLU, KGRN, code_start,    KRED, code_end,    KWHT, codesize,
+                KBLU, KGRN, data_start,    KRED, data_end,    KWHT, datasize,
+		KBLU, KGRN, mm->arg_start, KRED, mm->arg_end, KWHT, argusize,
+		KBLU, KGRN, mm->env_start, KRED, mm->env_end, KWHT, envisize,
+	 	KBLU, rss, KWHT,
+		KBLU, mm->total_vm, KWHT,
+		KBLU, KGRN, heap_start,    KRED, heap_end,    KWHT, heapsize,
+		KBLU, KGRN, stack_start,   KRED, stack_end,   KWHT, stacksize);
 
 	printk("Mem printed.");
 }
