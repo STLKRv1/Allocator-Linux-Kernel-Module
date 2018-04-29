@@ -3,12 +3,15 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define REP_SIZE 10000
 
-int fibo(int x, char str[1024], int flag, int filler[])
+int flag = 0;
+
+int fibo(int x, char str[1024], int filler[])
 {
-	sleep(0.5);
+	// sleep(0.5);
 
 	if (x == 0)
 	{
@@ -16,7 +19,8 @@ int fibo(int x, char str[1024], int flag, int filler[])
 		{
 			system(str);
 			system("sudo rmmod mymod");
-			system("tail /var/log/syslog -n 8");
+			system("tail /var/log/syslog -n -2");
+			printf("──────────────────────────────────────────────\n");
 	
 			flag = 1;
 		}
@@ -25,35 +29,50 @@ int fibo(int x, char str[1024], int flag, int filler[])
 	}
 
 	else if (x == 1)
+	{
 		return 1;
+	}
 
 	else{
+		int *ptr_1;
+		int *ptr_2;
+		int *ptr_3;
+		ptr_1 = (int *)malloc(50000);
+		ptr_2 = (int *)malloc(50000);
+		ptr_3 = (int *)malloc(50000);
+
 		int t[100];
-		t[7] = fibo(x - 1, str, flag, t) + fibo(x - 2, str, flag, NULL);
+
+		int random_index = rand() % 100 + 1; // generate random index to work around the optimization
+
+		t[random_index] = fibo(x - 1, str, t) + fibo(x - 2, str, NULL);
+
+		free(ptr_1);
+		free(ptr_2);
+		free(ptr_3);
+
+		return (t[random_index]);
 	}
 }
 
 int main() 
 {
 	pid_t this_pid = getpid(); 
-	printf("this pid = %d\n", this_pid);
 
 	char insmodstr[1024];
 
 	sprintf(insmodstr, "sudo insmod mymod.ko processid=%d", this_pid);
 
-	//system("sudo rmmod mymod"); // remove any previous module	
-	
-
 	// initial log
+	printf("\nInitial readings for PID: %d\n", this_pid);
 	system(insmodstr);
 	system("sudo rmmod mymod");
-	system("tail /var/log/syslog -n 8");
-	//system("dmesg");
+	system("tail /var/log/syslog -n -2");
+
+	printf("──────────────────────────────────────────────\nReadings after some recursive calls: \n");
 
 	// call to recursive function
-	fibo(1000, insmodstr, 0, NULL);
-	
+	fibo(100, insmodstr, NULL);	
 		
 	return 0;
 }
